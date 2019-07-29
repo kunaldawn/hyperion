@@ -1,0 +1,28 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y install docker-ce
+  - sudo service docker restart
+
+script:
+  - cd prometheus && docker build -t kunaldawn/hyperion-prometheus:v$TRAVIS_BUILD_NUMBER .
+  - cd .. && cd node-exporter && docker build -t kunaldawn/hyperion-node-exporter:v$TRAVIS_BUILD_NUMBER .
+  - cd .. && cd alertmanager && docker build -t kunaldawn/hyperion-alertmanager:v$TRAVIS_BUILD_NUMBER .
+  - cd .. && cd grafana && docker build -t kunaldawn/hyperion-grafana:v$TRAVIS_BUILD_NUMBER .
+
+after_success:
+  - if [ -z "$DOCKER_USER" ]; then
+      echo "Skip Docker Hub push";
+    else
+    docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
+    docker push kunaldawn/hyperion-prometheusv$TRAVIS_BUILD_NUMBER;
+    docker push kunaldawn/hyperion-node-exporter:v$TRAVIS_BUILD_NUMBER;
+    docker push kunaldawn/hyperion-alertmanager:v$TRAVIS_BUILD_NUMBER;
+    docker push kunaldawn/hyperion-grafana:v$TRAVIS_BUILD_NUMBER;
+    fi
