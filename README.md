@@ -1,12 +1,20 @@
 # HYPERION
 
-HYPERION was the Titan god of heavenly light. Hyperion's name means "watcher from above" or "he who goes above" from the greek words hyper and iôn.
+HYPERION is a simple and easy to deploy docker swarm monitoring/alert solution.
 
-HYPERION is a docker swarm monitoring/aleart solution.
+- Hyperion's name means "watcher from above" or "he who goes above" from the greek words hyper and iôn.
+- Hyperion is tool which provides a very simple way to setup set of FOSS tools to monitor docker swarm cluster.
+- Hyperion is for small tech teams who just want a simple and easy way to setup in house monitoring solution for their docker swarm with just one or two commands.
+- Hyperion is not fault tolerant (HA Cluster), its a cheap and easy solution, you can configure it accordingly.
+- Hyperion is for small swarms with not more than 20 approx nodes.
 
-NOTICE : WIP
+*NOTICE : WIP*
 
-## How to run
+# HYPERION Components
+
+
+
+# How to run on local machine
 
 ```bash
 $ docker swarm init
