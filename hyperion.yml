@@ -145,6 +145,20 @@ services:
         - traefik.backend=alertmanager
         - traefik.frontend.rule=PathPrefixStrip:/alertmanager/
 
+  docker-exporter:
+    image: kunaldawn/hyperion-docker-exporter
+    networks:
+      - monitoring
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 6M
+        reservations:
+          cpus: '0.05'
+          memory: 4M
+
   node-exporter:
     image: kunaldawn/hyperion-node-exporter
     networks:
