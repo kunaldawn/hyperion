@@ -3,11 +3,11 @@ global:
   evaluation_interval: 15s
 
   external_labels:
-    monitor: 'promswarm'
+    monitor: 'hyperion'
 
 rule_files:
-  - "swarm_node.rules.yml"
-  - "swarm_task.rules.yml"
+  - "node.rules.yml"
+  - "task.rules.yml"
 
 alerting:
   alertmanagers:
@@ -20,10 +20,10 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'dockerd-exporter'
+  - job_name: 'docker-exporter'
     dns_sd_configs:
     - names:
-      - 'tasks.dockerd-exporter'
+      - 'tasks.docker-exporter'
       type: 'A'
       port: 9323
 
