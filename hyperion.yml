@@ -62,16 +62,18 @@ services:
       mode: global
       resources:
         limits:
+          cpus: '0.10'
           memory: 128M
         reservations:
+          cpus: '0.10'
           memory: 64M
 
-  unsee:
-    image: cloudflare/unsee
+  karma:
+    image: lmierzwa/karma
     networks:
       - hyperion-net
     environment:
-      - "ALERTMANAGER_URI=http://alertmanager:9093"
+      - ALERTMANAGER_URI=http://alertmanager:9093
     deploy:
       mode: replicated
       replicas: 1
@@ -79,8 +81,8 @@ services:
         - traefik.enable=true
         - traefik.port=8080
         - traefik.docker.network=hyperion-net
-        - traefik.backend=unsee
-        - traefik.frontend.rule=PathPrefixStrip:/unsee/
+        - traefik.backend=karma
+        - traefik.frontend.rule=PathPrefixStrip:/karma/
 
   grafana:
     image: kunaldawn/hyperion-grafana
@@ -136,6 +138,12 @@ services:
           memory: 128M
         reservations:
           memory: 64M
+      labels:
+        - traefik.enable=true
+        - traefik.port=9093
+        - traefik.docker.network=hyperion-net
+        - traefik.backend=alertmanager
+        - traefik.frontend.rule=PathPrefixStrip:/alertmanager/
 
   node-exporter:
     image: kunaldawn/hyperion-node-exporter
