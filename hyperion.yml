@@ -148,7 +148,7 @@ services:
   docker-exporter:
     image: kunaldawn/hyperion-docker-exporter
     networks:
-      - monitoring
+       - hyperion-net
     deploy:
       mode: global
       resources:
