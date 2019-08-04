@@ -49,7 +49,7 @@ services:
         - traefik.docker.network=hyperion-net
         - traefik.backend=karma
         - traefik.frontend.rule=PathPrefixStrip:/karma/
-        - traefik.frontend.auth.basic=${ADMIN_USER:-admin}:${ADMIN_HASH_PASSWORD:-$$2y$$05$$UuYGh8bP/kAaJHVELa83JuzcoqcxeXIlU2KhErjPSSIg5bBJP5U3C}
+        - traefik.frontend.auth.basic=${ADMIN_AUTH:-'admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy'}
       resources:
         limits:
           cpus: '0.10'
@@ -118,7 +118,7 @@ services:
         - traefik.docker.network=hyperion-net
         - traefik.backend=alertmanager
         - traefik.frontend.rule=PathPrefixStrip:/alertmanager/
-        - traefik.frontend.auth.basic=${ADMIN_USER:-admin}:${ADMIN_HASH_PASSWORD:-$$2y$$05$$UuYGh8bP/kAaJHVELa83JuzcoqcxeXIlU2KhErjPSSIg5bBJP5U3C}
+        - traefik.frontend.auth.basic=${ADMIN_AUTH:-'admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy'}
 
   docker-exporter:
     image: kunaldawn/hyperion-docker-exporter
@@ -192,4 +192,4 @@ services:
         - traefik.docker.network=hyperion-net
         - traefik.backend=prometheus
         - traefik.frontend.rule=PathPrefixStrip:/prometheus/
-        - traefik.frontend.auth.basic=${ADMIN_USER:-admin}:${ADMIN_HASH_PASSWORD:-$$2y$$05$$UuYGh8bP/kAaJHVELa83JuzcoqcxeXIlU2KhErjPSSIg5bBJP5U3C}
+        - traefik.frontend.auth.basic=${ADMIN_AUTH:-'admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy'}
