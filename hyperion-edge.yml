@@ -35,4 +35,4 @@ services:
         - traefik.port=8080
         - traefik.docker.network=hyperion-net
         - traefik.frontend.rule=PathPrefixStrip:/traefik/
-        - traefik.frontend.auth.basic=${ADMIN_AUTH:-'admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy'}
+        - traefik.frontend.auth.basic=${ADMIN_AUTH:-admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy}
