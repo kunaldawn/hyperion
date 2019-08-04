@@ -1,0 +1,38 @@
+version: "3.3"
+
+networks:
+  hyperion-net:
+    driver: overlay
+    attachable: true
+    external:
+      name: hyperion-net
+
+services:
+  traefik:
+    image: traefik:v1.7.12-alpine
+    command: >
+      --api
+      --docker
+      --logLevel="DEBUG"
+      --docker.watch
+      --docker.swarmMode
+      --docker.exposedbydefault=false
+    ports:
+      - 8888:80
+    networks:
+      - hyperion-net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.port=8080
+        - traefik.docker.network=hyperion-net
+        - traefik.frontend.rule=PathPrefixStrip:/traefik/
+        - traefik.frontend.auth.basic=${ADMIN_PASSWORD:-admin}

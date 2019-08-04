@@ -6,8 +6,12 @@ global:
     monitor: 'hyperion'
 
 rule_files:
-  - "node.rules.yml"
-  - "task.rules.yml"
+  - "node.cpu.usage.rules.yml"
+  - "node.disk.fill.rules.yml"
+  - "node.disk.usage.rules.yml"
+  - "node.memory.usage.rules.yml"
+  - "task.memory.usage.rules.yml"
+  - "task.cpu.usage.rules.yml"
 
 alerting:
   alertmanagers:

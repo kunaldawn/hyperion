@@ -1,0 +1,29 @@
+groups:
+- name: hyperion.node.disk.usage.rules
+  rules:
+  - alert: node.disk.usage.60
+    expr: ((node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) * 100 / node_filesystem_size_bytes{mountpoint="/"}) * ON(instance) GROUP_LEFT(node_name) node_meta > 60
+    for: 1m
+    labels:
+      severity: info
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk usage is at {{ humanize $value }}%.
+      summary: DISK [60%] ALERT FOR NODE '{{ $labels.node_name }}'
+
+  - alert: node.disk.usage.80
+    expr: ((node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) * 100 / node_filesystem_size_bytes{mountpoint="/"}) * ON(instance) GROUP_LEFT(node_name) node_meta > 80
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk usage is at {{ humanize $value }}%.
+      summary: DISK [80%] ALERT FOR NODE '{{ $labels.node_name }}'
+
+  - alert: node.disk.usage.90
+    expr: ((node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) * 100 / node_filesystem_size_bytes{mountpoint="/"}) * ON(instance) GROUP_LEFT(node_name) node_meta > 90
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk usage is at {{ humanize $value }}%.
+      summary: DISK [90%] ALERT FOR NODE '{{ $labels.node_name }}'

@@ -1,0 +1,29 @@
+groups:
+- name: hyperion.node.disk.fill.rules
+  rules:
+  - alert: node.disk.fill.48h
+    expr: predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 48 * 3600) * ON(instance) GROUP_LEFT(node_name) node_meta < 0
+    for: 1h
+    labels:
+      severity: info
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk is going to fill up in 48h.
+      summary: DISK FILL [IN 48 HOURS] ALERT FOR NODE '{{ $labels.node_name }}'
+
+  - alert: node.disk.fill.24h
+    expr: predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 24 * 3600) * ON(instance) GROUP_LEFT(node_name) node_meta < 0
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk is going to fill up in 24h.
+      summary: DISK FILL [IN 24 HOURS] ALERT FOR NODE '{{ $labels.node_name }}'
+  
+  - alert: node.disk.fill.6h
+    expr: predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 6 * 3600) * ON(instance) GROUP_LEFT(node_name) node_meta < 0
+    for: 1h
+    labels:
+      severity: critical
+    annotations:
+      description: Swarm node {{ $labels.node_name }} disk is going to fill up in 6h.
+      summary: DISK FILL [IN 6 HOURS] ALERT FOR NODE '{{ $labels.node_name }}'

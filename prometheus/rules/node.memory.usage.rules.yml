@@ -1,0 +1,29 @@
+groups:
+- name: hyperion.node.memory.usage.rules
+  rules:
+  - alert: node.memory.usage.50
+    expr: sum(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name) > 50
+    for: 1m
+    labels:
+      severity: info
+    annotations:
+      description: Swarm node {{ $labels.node_name }} memory usage is at {{ humanize $value}}%.
+      summary: MEMORY [50%] ALERT ON NODE '{{ $labels.node_name }}'
+
+  - alert: node.memory.usage.60
+    expr: sum(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name) > 60
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: Swarm node {{ $labels.node_name }} memory usage is at {{ humanize $value}}%.
+      summary: MEMORY [60%] ALERT ON NODE '{{ $labels.node_name }}'
+  
+  - alert: node.memory.usage.80
+    expr: sum(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name) > 80
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      description: Swarm node {{ $labels.node_name }} memory usage is at {{ humanize $value}}%.
+      summary: MEMORY [80%] ALERT ON NODE '{{ $labels.node_name }}'

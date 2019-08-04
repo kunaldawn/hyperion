@@ -12,41 +12,7 @@ volumes:
     grafana: {}
     alertmanager: {}
 
-configs:
-  node_rules:
-    file: ./prometheus/rules/node.rules.yml
-  task_rules:
-    file: ./prometheus/rules/task.rules.yml
-
 services:
-  traefik:
-    image: traefik:v1.7.12-alpine
-    command: >
-      --api
-      --docker
-      --logLevel="DEBUG"
-      --docker.watch
-      --docker.swarmMode
-      --docker.exposedbydefault=false
-    ports:
-      - 8888:80
-    networks:
-      - hyperion-net
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-      labels:
-        - traefik.enable=true
-        - traefik.port=8080
-        - traefik.docker.network=hyperion-net
-        - traefik.frontend.rule=PathPrefixStrip:/traefik/
-
   cadvisor:
     image: google/cadvisor
     networks:
@@ -83,6 +49,14 @@ services:
         - traefik.docker.network=hyperion-net
         - traefik.backend=karma
         - traefik.frontend.rule=PathPrefixStrip:/karma/
+        - traefik.frontend.auth.basic=${ADMIN_PASSWORD:-admin}
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: 128M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
 
   grafana:
     image: kunaldawn/hyperion-grafana
@@ -144,6 +118,7 @@ services:
         - traefik.docker.network=hyperion-net
         - traefik.backend=alertmanager
         - traefik.frontend.rule=PathPrefixStrip:/alertmanager/
+        - traefik.frontend.auth.basic=${ADMIN_PASSWORD:-admin}
 
   docker-exporter:
     image: kunaldawn/hyperion-docker-exporter
@@ -180,8 +155,10 @@ services:
       mode: global
       resources:
         limits:
+          cpus: '0.10'
           memory: 128M
         reservations:
+          cpus: '0.10'
           memory: 64M
 
   prometheus:
@@ -196,11 +173,6 @@ services:
       - '--web.route-prefix=/'
     volumes:
       - prometheus:/prometheus
-    configs:
-      - source: node_rules
-        target: /etc/prometheus/node.rules.yml
-      - source: task_rules
-        target: /etc/prometheus/task.rules.yml
     deploy:
       mode: replicated
       replicas: 1
@@ -209,12 +181,15 @@ services:
           - node.role == manager
       resources:
         limits:
+          cpus: '0.20'
           memory: 256M
         reservations:
-          memory: 128M
+          cpus: '0.10'
+          memory: 64M
       labels:
         - traefik.enable=true
         - traefik.port=9090
         - traefik.docker.network=hyperion-net
         - traefik.backend=prometheus
         - traefik.frontend.rule=PathPrefixStrip:/prometheus/
+        - traefik.frontend.auth.basic=${ADMIN_PASSWORD:-admin}

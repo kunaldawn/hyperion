@@ -1,0 +1,29 @@
+groups:
+- name: hyperion.node.cpu.usage.rules
+  rules:
+  - alert: node.cpu.usage.50
+    expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[1m]) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name)) > 50
+    for: 1m
+    labels:
+      severity: info
+    annotations:
+      description: Swarm node {{ $labels.node_name }} CPU usage is at {{ humanize $value}}%.
+      summary: CPU [50%] ALERT ON NODE '{{ $labels.node_name }}'
+
+  - alert: node.cpu.usage.70
+    expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[1m]) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name)) > 70
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: Swarm node {{ $labels.node_name }} CPU usage is at {{ humanize $value}}%.
+      summary: CPU [70%] ALERT ON NODE '{{ $labels.node_name }}'
+  
+  - alert: node.cpu.usage.90
+    expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[1m]) * ON(instance) GROUP_LEFT(node_name) node_meta * 100) BY (node_name)) > 90
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      description: Swarm node {{ $labels.node_name }} CPU usage is at {{ humanize $value}}%.
+      summary: CPU [90%] ALERT ON NODE '{{ $labels.node_name }}'
