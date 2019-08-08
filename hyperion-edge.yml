@@ -38,4 +38,4 @@ services:
         - traefik.frontend.auth.basic=${ADMIN_AUTH:-admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy}
         - hyperion.enable=true
         - hyperion.port=8080
-        - hyperion.path=/metric
+        - hyperion.path=/metrics
