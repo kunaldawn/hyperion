@@ -45,4 +45,8 @@ scrape_configs:
       type: 'A'
       port: 9100
 
+  - job_name: 'metric-discovery'
+    file_sd_configs:
+      - files:
+        - /etc/hyperion/discovery/providor.json
 
