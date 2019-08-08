@@ -140,7 +140,8 @@ services:
     networks:
        - hyperion-net
     environment:
-      - HYPERION_DISCOVERY_SERVICE_NAME=hyperion-prometheus
+      - DOCKER_API_VERSION=1.40
+      - HYPERION_DISCOVERY_SERVICE_NAME=hyperion_prometheus
       - HYPERION_DISCOVERY_SERVICE_PATH=/etc/hyperion/discovery/providor.json
       - HYPERION_DISCOVERY_SERVICE_REFRESH=${METRIC_DISCOVERY_REFRESH:-30}
     volumes:
