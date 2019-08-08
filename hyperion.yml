@@ -11,6 +11,7 @@ volumes:
     prometheus: {}
     grafana: {}
     alertmanager: {}
+    discovery: {}
 
 services:
   cadvisor:
@@ -134,6 +135,32 @@ services:
           cpus: '0.05'
           memory: 4M
 
+  metric-discovery:
+    image: kunaldawn/hyperion-metric-discovery
+    networks:
+       - hyperion-net
+    environment:
+      - DOCKER_API_VERSION=1.40
+      - HYPERION_DISCOVERY_SERVICE_NAME=hyperion_prometheus
+      - HYPERION_DISCOVERY_SERVICE_PATH=/etc/hyperion/discovery/providor.json
+      - HYPERION_DISCOVERY_SERVICE_REFRESH=${METRIC_DISCOVERY_REFRESH:-30}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - discovery:/etc/hyperion/discovery
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+
   node-exporter:
     image: kunaldawn/hyperion-node-exporter
     networks:
@@ -173,6 +200,7 @@ services:
       - '--web.route-prefix=/'
     volumes:
       - prometheus:/prometheus
+      - discovery:/etc/hyperion/discovery
     deploy:
       mode: replicated
       replicas: 1
