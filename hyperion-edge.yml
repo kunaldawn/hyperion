@@ -12,6 +12,8 @@ services:
     image: traefik:v1.7.12-alpine
     command: >
       --api
+      --metrics
+      --metrics.prometheus
       --docker
       --logLevel="DEBUG"
       --docker.watch

@@ -60,7 +60,7 @@ services:
           memory: 64M
 
   grafana:
-    image: kunaldawn/hyperion-grafana
+    image: kunaldawn/hyperion-grafana:v1.0
     networks:
       - hyperion-net
     environment:
@@ -90,7 +90,7 @@ services:
         - traefik.frontend.rule=PathPrefixStrip:/grafana/
  
   alertmanager:
-    image: kunaldawn/hyperion-alertmanager
+    image: kunaldawn/hyperion-alertmanager:v1.0
     networks:
       - hyperion-net
     environment:
@@ -122,7 +122,7 @@ services:
         - traefik.frontend.auth.basic=${ADMIN_AUTH:-admin:$2y$05$gMFUgee1JAwtvxw22rWoHOPDm42wxkz56oTI8UkmDVH6lcuR/CmWy}
 
   docker-exporter:
-    image: kunaldawn/hyperion-docker-exporter
+    image: kunaldawn/hyperion-docker-exporter:v1.0
     networks:
        - hyperion-net
     deploy:
@@ -136,7 +136,7 @@ services:
           memory: 4M
 
   metric-discovery:
-    image: kunaldawn/hyperion-metric-discovery
+    image: kunaldawn/hyperion-metric-discovery:v1.0
     networks:
        - hyperion-net
     environment:
@@ -162,7 +162,7 @@ services:
           memory: 32M
 
   node-exporter:
-    image: kunaldawn/hyperion-node-exporter
+    image: kunaldawn/hyperion-node-exporter:v1.0
     networks:
       - hyperion-net
     environment:
@@ -189,7 +189,7 @@ services:
           memory: 64M
 
   prometheus:
-    image: kunaldawn/hyperion-prometheus
+    image: kunaldawn/hyperion-prometheus:v1.0
     networks:
       - hyperion-net
     command:

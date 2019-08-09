@@ -11,22 +11,12 @@ before_install:
   - sudo service docker restart
 
 script:
-  - cd prometheus && docker build -t kunaldawn/hyperion-prometheus .
-  - cd .. && cd node-exporter && docker build -t kunaldawn/hyperion-node-exporter .
-  - cd .. && cd docker-exporter && docker build -t kunaldawn/hyperion-docker-exporter .
-  - cd .. && cd alertmanager && docker build -t kunaldawn/hyperion-alertmanager .
-  - cd .. && cd grafana && docker build -t kunaldawn/hyperion-grafana .
-  - cd .. && cd metric-discovery && docker build -t kunaldawn/hyperion-metric-discovery .
+  - ./build.sh
 
 after_success:
   - if [ -z "$DOCKER_USER" ]; then
       echo "Skip Docker Hub push";
     else
     docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
-    docker push kunaldawn/hyperion-prometheus;
-    docker push kunaldawn/hyperion-node-exporter;
-    docker push kunaldawn/hyperion-docker-exporter;
-    docker push kunaldawn/hyperion-alertmanager;
-    docker push kunaldawn/hyperion-grafana;
-    docker push kunaldawn/hyperion-metric-discovery;
+    ./push.sh;
     fi
