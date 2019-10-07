@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1564532046791,
+  "iteration": 1570414812577,
   "links": [],
   "panels": [
     {
@@ -1940,7 +1940,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5s",
+  "refresh": "5m",
   "schemaVersion": 18,
   "style": "dark",
   "tags": [
@@ -1969,7 +1969,11 @@
         "sort": 0,
         "tagValuesQuery": "label_values({node_id=\"$tag\"},node_name)",
         "tags": [
-          "home"
+          "pocketnetwork-ct-1",
+          "pocketnetwork-gs-manager",
+          "pocketnetwork-tournament-1",
+          "pocketnetwork-mtt-2",
+          "pocketnetwork-ct-2"
         ],
         "tagsQuery": "label_values(node_meta, node_name)",
         "type": "query",
@@ -2051,7 +2055,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
