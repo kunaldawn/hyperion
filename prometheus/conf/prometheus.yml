@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     60s
-  evaluation_interval: 60s
+  scrape_interval:     5m
+  evaluation_interval: 5m
 
   external_labels:
     monitor: 'hyperion'
@@ -49,4 +49,3 @@ scrape_configs:
     file_sd_configs:
       - files:
         - /etc/hyperion/discovery/providor.json
-
