@@ -1,6 +1,6 @@
 global:
-  scrape_interval:     5m
-  evaluation_interval: 5m
+  scrape_interval:     1m
+  evaluation_interval: 1m
 
   external_labels:
     monitor: 'hyperion'
@@ -44,8 +44,3 @@ scrape_configs:
       - 'tasks.node-exporter'
       type: 'A'
       port: 9100
-
-  - job_name: 'metric-discovery'
-    file_sd_configs:
-      - files:
-        - /etc/hyperion/discovery/providor.json
